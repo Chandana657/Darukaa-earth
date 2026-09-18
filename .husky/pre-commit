@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Runs lint-staged for the frontend and black/flake8 for the backend before
+# every commit, so formatting/lint issues never reach the repo.
+
+echo "Running pre-commit checks..."
+
+if [ -d "frontend" ]; then
+  cd frontend && npx lint-staged
+  cd ..
+fi
+
+if [ -d "backend" ] && [ -d "backend/venv" ]; then
+  cd backend
+  . venv/bin/activate
+  black --check app run.py seed.py tests || { echo "Run 'black app run.py seed.py tests' to fix formatting."; exit 1; }
+  flake8 app run.py seed.py || exit 1
+  cd ..
+fi

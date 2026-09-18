@@ -1,0 +1,10 @@
+[tool.black]
+line-length = 110
+target-version = ["py311"]
+exclude = '''
+/(
+  migrations
+  | venv
+  | \.venv
+)/
+'''

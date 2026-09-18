@@ -1,0 +1,24 @@
+# Optional: spins up a real PostgreSQL + PostGIS database for local development
+# that more closely matches production, instead of the SQLite fallback.
+#
+# Usage:
+#   docker compose up -d
+#   # then in backend/.env set:
+#   # DATABASE_URL=postgresql://darukaa:darukaa@localhost:5432/darukaa_earth
+version: "3.9"
+
+services:
+  db:
+    image: postgis/postgis:16-3.4
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: darukaa
+      POSTGRES_PASSWORD: darukaa
+      POSTGRES_DB: darukaa_earth
+    ports:
+      - "5432:5432"
+    volumes:
+      - darukaa_pgdata:/var/lib/postgresql/data
+
+volumes:
+  darukaa_pgdata:
